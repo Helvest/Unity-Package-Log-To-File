@@ -1,0 +1,19 @@
+{
+  "name": "com.helvest.logtofile",
+  "version": "1.0.0",
+  "displayName": "Log To File",
+  "description": "Create a folder in the game folder where log files are created each time the game starts",
+  "keywords": [
+    "Log",
+    "File",
+    "Debug"
+  ],
+  "author": {
+    "name": "Pedro Dominic\u00e9 (Helvest)",
+    "url": "https://twitter.com/HelvestEpic"
+  },
+  "repository": {
+    "url": "https://github.com/Helvest/Unity-Package-Log-To-File.git",
+    "type": "git"
+  }
+}
