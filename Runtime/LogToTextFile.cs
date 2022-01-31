@@ -4,7 +4,7 @@ using System.Text;
 using UnityEngine;
 
 namespace LogToFile
-{ 
+{
 	public class LogToTextFile : MonoBehaviour
 	{
 
@@ -21,26 +21,20 @@ namespace LogToFile
 		private string _filePathAndName;
 
 		public bool CanWrite
-        {
-            get
-            {
-				return _canWrite && !MaxSizeReached;
-			}
+		{
+			get => _canWrite && !MaxSizeReached;
 
-            set
-            {
-				_canWrite = value && !MaxSizeReached;
-			}
-        }
+			set => _canWrite = value && !MaxSizeReached;
+		}
 
 		private bool _canWrite = false;
 
 		public bool MaxSizeReached => ActualSize >= _maxByteSite;
 
-	#if UNITY_EDITOR
+#if UNITY_EDITOR
 		[SerializeField]
 		private bool _useInEditor = false;
-	#endif
+#endif
 
 		private string newLine;
 		private string newLineTab;
@@ -53,13 +47,13 @@ namespace LogToFile
 
 		private void Awake()
 		{
-	#if UNITY_EDITOR
+#if UNITY_EDITOR
 			if (!_useInEditor)
 			{
 				enabled = false;
 				return;
 			}
-	#endif
+#endif
 
 			newLine = Environment.NewLine;
 			newLineTab = $"{newLine}\t";
@@ -94,10 +88,10 @@ namespace LogToFile
 
 		private void OnEnable()
 		{
-            if (_canWrite)
-            {
+			if (_canWrite)
+			{
 				Application.logMessageReceived += OnLog;
-            }
+			}
 		}
 
 		private void OnDisable()
@@ -193,7 +187,7 @@ namespace LogToFile
 						logFile.WriteLineAsync($"{newLine}{DateTime.Now:yyyy'.'MM'.'dd HH':'mm':'ss} frame {_frameCount}{newLine}");
 
 						ActualSize = logFile.BaseStream.Length;
- 
+
 						if (MaxSizeReached)
 						{
 							_canWrite = false;
@@ -223,7 +217,7 @@ namespace LogToFile
 			}
 			catch (Exception e)
 			{
-				var canWriteState = _canWrite;
+				bool canWriteState = _canWrite;
 				_canWrite = false;
 				Debug.LogError($"Error while trying to write into log file {e.Message}");
 				_canWrite = canWriteState;
