@@ -67,9 +67,9 @@ namespace LogToFile
 			if (LogToFileUtility != null)
 			{
 				Application.logMessageReceived -= LogToFileUtility.OnLog;
+				LogToFileUtility.Dispose();
 			}
 
-			LogToFileUtility.Dispose();
 			LogToFileUtility = null;
 		}
 
