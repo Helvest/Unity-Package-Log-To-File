@@ -21,7 +21,7 @@ namespace LogToFile
 
 		public virtual LogToFile LogToFileUtility { get; protected set; }
 
-		public bool CanWrite => LogToFileUtility != null ? LogToFileUtility.CanWrite : false;
+		public bool CanWrite => LogToFileUtility != null && LogToFileUtility.CanWrite;
 
 		#endregion
 

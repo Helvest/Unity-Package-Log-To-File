@@ -1,6 +1,6 @@
 {
   "name": "com.helvest.logtofile",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "displayName": "Log To File",
   "description": "Log To File is a versatile Unity package designed to aid in the development and debugging process by providing a simple and efficient way to log and store console messages in text files. These logs include detailed runtime information, error messages, warnings, and more, providing a valuable resource for diagnosing and troubleshooting your Unity projects.",
   "keywords": [
