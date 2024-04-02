@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text;
+using EasyPath;
 using UnityEngine;
 
 namespace LogToFile
@@ -10,7 +11,6 @@ namespace LogToFile
 
 		#region Fields
 
-		public string FolderName { get; set; } = "Logs";
 		public int MaxByteSize { get; set; } = 1048576;
 
 		private string _filePathAndName;
@@ -50,13 +50,30 @@ namespace LogToFile
 		/// <summary>
 		/// Constructor for LogToFileUtility.
 		/// </summary>
-		public void Init()
+		public void Init<T>(T pathData) where T : PathData, new()
 		{
-			_filePathAndName = $"{Application.dataPath}/../{FolderName}/Log {DateTime.Now:yyyy'-'MM'-'dd HH'h'mm'm'ss's'}.log";
+			T path = new T();
+			path.Copy(pathData);
 
-			if (!Directory.Exists($"{Application.dataPath}/../{FolderName}"))
+			if (string.IsNullOrWhiteSpace(path.FileName))
 			{
-				Directory.CreateDirectory($"{Application.dataPath}/../{FolderName}");
+				path.FileName = $"Log {DateTime.Now:yyyy'-'MM'-'dd HH'h'mm'm'ss's'}";
+			}
+			else
+			{
+				path.FileName = $"{path.FileName} {DateTime.Now:yyyy'-'MM'-'dd HH'h'mm'm'ss's'}";
+			}
+
+			if (string.IsNullOrWhiteSpace(path.Extension))
+			{
+				path.Extension = "log";
+			}
+
+			_filePathAndName = path.GetFullPath();
+
+			if (!Directory.Exists(path.GetDirectoryPath()))
+			{
+				Directory.CreateDirectory(path.GetDirectoryPath());
 			}
 
 			CanWrite = true;

@@ -1,4 +1,4 @@
-using System;
+using EasyPath;
 using UnityEngine;
 
 namespace LogToFile
@@ -8,8 +8,13 @@ namespace LogToFile
 
 		#region Fields
 
-		[SerializeField]
-		protected string folderName = "Logs";
+		public PathDataWithParent pathData = new PathDataWithParent()
+		{
+			PathSystem = PathSystem.GameData,
+			SubPath = "../Log",
+			FileName = "Log",
+			Extension = "log"
+		};
 
 		[SerializeField]
 		protected int maxByteSize = 1048576; // 1048576 bytes = 1 MB
@@ -39,11 +44,10 @@ namespace LogToFile
 
 			LogToFileUtility = new LogToFile()
 			{ 
-				FolderName = folderName, 
 				MaxByteSize = maxByteSize 
 			};
 
-			LogToFileUtility.Init();
+			LogToFileUtility.Init(pathData);
 		}
 
 		protected virtual void OnEnable()
