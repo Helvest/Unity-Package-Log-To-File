@@ -3,81 +3,77 @@ using UnityEngine;
 
 namespace LogToFile
 {
-	public class LogToFileBehaviour : MonoBehaviour
-	{
+    public class LogToFileBehaviour : MonoBehaviour
+    {
+        #region Fields
 
-		#region Fields
+        public PathDataWithParent pathData = new PathDataWithParent()
+        {
+            PathSystem = PathSystem.GameData,
+            SubPath = "../Log",
+            FileName = "Log",
+            Extension = "log"
+        };
 
-		public PathDataWithParent pathData = new PathDataWithParent()
-		{
-			PathSystem = PathSystem.GameData,
-			SubPath = "../Log",
-			FileName = "Log",
-			Extension = "log"
-		};
-
-		[SerializeField]
-		protected int maxByteSize = 1048576; // 1048576 bytes = 1 MB
+        [SerializeField] private int _maxByteSize = 1048576; // 1048576 bytes = 1 MB
 
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
-		[SerializeField]
-		protected bool useInEditor = false;
+        [SerializeField] private bool _useInEditor;
 #endif
 
-		public virtual LogToFile LogToFileUtility { get; protected set; }
+        public LogToFile LogToFileUtility { get; protected set; }
 
-		public bool CanWrite => LogToFileUtility != null && LogToFileUtility.CanWrite;
+        public bool CanWrite => LogToFileUtility is { CanWrite: true };
 
-		#endregion
+        #endregion
 
-		#region Init
+        #region Init
 
-		protected virtual void Awake()
-		{
+        private void Awake()
+        {
 #if UNITY_EDITOR || DEVELOPMENT_BUILD
-			if (!useInEditor)
-			{
-				enabled = false;
-				return;
-			}
+            if (!_useInEditor)
+            {
+                enabled = false;
+                return;
+            }
 #endif
 
-			LogToFileUtility = new LogToFile()
-			{ 
-				MaxByteSize = maxByteSize 
-			};
+            LogToFileUtility = new LogToFile()
+            {
+                MaxByteSize = _maxByteSize
+            };
 
-			LogToFileUtility.Init(pathData);
-		}
+            LogToFileUtility.Init(pathData);
+        }
 
-		protected virtual void OnEnable()
-		{
-			if (LogToFileUtility != null)
-			{
-				Application.logMessageReceived += LogToFileUtility.OnLog;
-			}
-		}
+        private void OnEnable()
+        {
+            if (LogToFileUtility != null)
+            {
+                Application.logMessageReceived += LogToFileUtility.OnLog;
+            }
+        }
 
-		protected virtual void OnDisable()
-		{
-			if (LogToFileUtility != null)
-			{
-				Application.logMessageReceived -= LogToFileUtility.OnLog;
-			}
-		}
+        private void OnDisable()
+        {
+            if (LogToFileUtility != null)
+            {
+                Application.logMessageReceived -= LogToFileUtility.OnLog;
+            }
+        }
 
-		protected virtual void OnApplicationQuit()
-		{
-			if (LogToFileUtility != null)
-			{
-				Application.logMessageReceived -= LogToFileUtility.OnLog;
-				LogToFileUtility.Dispose();
-			}
+        private void OnApplicationQuit()
+        {
+            if (LogToFileUtility != null)
+            {
+                Application.logMessageReceived -= LogToFileUtility.OnLog;
+                LogToFileUtility.Dispose();
+            }
 
-			LogToFileUtility = null;
-		}
+            LogToFileUtility = null;
+        }
 
-		#endregion
-
-	}
+        #endregion
+    }
 }
